@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
+
+contract Agreement {
+    address public participant1;
+    address public participant2;
+    bool public finalized;
+
+    mapping(address=>bool) public signatures;
+
+    constructor(address participant1parameter, address participant2parameter){
+        participant1=participant1parameter;
+        participant2=participant2parameter;
+        finalized=false;
+
+    }
+
+    error NotAllowed();
+
+    function sign() public{
+        if (participant1==msg.sender || participant2==msg.sender){
+            signatures[msg.sender]=true;
+        }else{
+            revert NotAllowed();
+        }
+        if(signatures[participant1]==true && signatures[participant2]==true){
+            finalized=true;
+        }
+            
+    } 
+
+
+}
